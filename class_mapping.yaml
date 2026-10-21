@@ -1,0 +1,38 @@
+# 실제 categories / YOLO names를 먼저 --inspect로 확인하세요.
+# 공백과 하이픈은 underscore, 영문은 소문자로 정규화됩니다.
+# 아래는 명시적으로 허용한 이름만 매핑합니다. 새 이름은 review.csv에 기록됩니다.
+Trash: Trash
+Marine_Life: Marine_Life
+Equipment: Equipment
+trash: Trash
+trash_plastic: Trash
+trash_metal: Trash
+trash_fishing_gear: Trash
+trash_unknown_instance: Trash
+trash_etc: Trash
+trash_fabric: Trash
+trash_paper: Trash
+trash_rubber: Trash
+trash_wood: Trash
+trash_branch: Trash
+trash_wreckage: Trash
+trash_rope: Trash
+trash_tarp: Trash
+trash_net: Trash
+trash_bag: Trash
+trash_bottle: Trash
+trash_container: Trash
+trash_cup: Trash
+trash_clothing: Trash
+trash_pipe: Trash
+trash_snack_wrapper: Trash
+trash_can: Trash
+animal_fish: Marine_Life
+animal_crab: Marine_Life
+animal_starfish: Marine_Life
+animal_eel: Marine_Life
+animal_shells: Marine_Life
+animal_etc: Marine_Life
+plant: Marine_Life
+rov: Equipment
+unknown: null  # 의미 불명확: 이미지 전체를 제외하고 검토

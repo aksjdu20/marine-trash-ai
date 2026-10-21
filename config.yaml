@@ -1,0 +1,42 @@
+model: yolo26n.pt  # 대체: yolov8n.pt (A와 B 모두 변경)
+data: data/processed/trashcan_instance_seed42/dataset.yaml
+classes: [Trash, Marine_Life, Equipment]
+device: auto
+seed: 42
+train:
+  epochs: 50
+  imgsz: 640
+  batch: 8  # CUDA 메모리 부족 시 4/2; auto batch는 CUDA에서 -1
+  optimizer: AdamW
+  lr0: 0.001
+  workers: 0
+  patience: 0  # 조기 종료 없이 동일 epoch 비교
+  deterministic: true
+  # A와 B 공통 Ultralytics 증강 조건을 명시적으로 고정
+  hsv_h: 0.015
+  hsv_s: 0.7
+  hsv_v: 0.4
+  degrees: 0.0
+  translate: 0.1
+  scale: 0.5
+  shear: 0.0
+  perspective: 0.0
+  flipud: 0.0
+  fliplr: 0.5
+  mosaic: 1.0
+  mixup: 0.0
+  copy_paste: 0.0
+  close_mosaic: 10
+underwater:
+  strength: 0.5  # 0~1. B 학습 이미지만 1:1 변환, 표본 수는 동일
+  probability: 0.8
+evaluation:
+  conf: 0.25  # 고정 임계값 P/R/F1 및 오류 분석
+  ap_conf: 0.001  # Ultralytics PR 곡선/mAP용 낮은 cutoff
+  match_iou: 0.5
+  nms_iou: 0.7
+  max_det: 300
+  max_error_images: 40
+weights:
+  A: models/A_seed42/weights/best.pt
+  B: models/B_seed42/weights/best.pt

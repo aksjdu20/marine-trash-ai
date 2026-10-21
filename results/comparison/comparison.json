@@ -1,0 +1,9 @@
+{
+  "runs": [
+    "C:\\Coding Projects\\현욱이 거\\marine_trash_ai\\results\\evaluation\\A_seed42",
+    "C:\\Coding Projects\\현욱이 거\\marine_trash_ai\\results\\evaluation\\B_seed42"
+  ],
+  "warnings": [],
+  "controlled": true,
+  "interpretation": "B-A 차이와 여러 seed 평균/표준편차. 한 seed만으로 유의한 개선이라 단정하지 않기. 테스트셋으로 임계값/모델을 조정하지 않기."
+}

@@ -1,0 +1,16 @@
+output: results/experiments
+variants: [A, B]
+# 모든 조건에 config.yaml의 동일 conf/IoU/imgsz 적용
+conditions:
+  - name: clean
+    video: data/experiments/clean.mp4
+    ground_truth: null  # 라벨 완료 후 data/experiments/clean_frames/dataset.yaml
+  - name: dark
+    video: data/experiments/dark.mp4
+    ground_truth: null
+  - name: turbid
+    video: data/experiments/turbid.mp4
+    ground_truth: null
+  - name: mixed
+    video: data/experiments/mixed.mp4
+    ground_truth: null

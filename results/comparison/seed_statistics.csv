@@ -1,0 +1,5 @@
+﻿,precision,precision,precision,recall,recall,recall,f1,f1,f1,map50,map50,map50,map50_95,map50_95,map50_95,inference_fps,inference_fps,inference_fps,pipeline_fps,pipeline_fps,pipeline_fps
+,mean,std,count,mean,std,count,mean,std,count,mean,std,count,mean,std,count,mean,std,count,mean,std,count
+variant,,,,,,,,,,,,,,,,,,,,,
+A,0.4966063348416289,,1,0.4202967927237913,,1,0.4552761213378273,,1,0.4084133306225301,,1,0.2471818901965027,,1,26.089723561567784,,1,22.381924428692034,,1
+B,0.4687348521570528,,1,0.462900909526089,,1,0.4657996146435453,,1,0.3996294072290224,,1,0.2544928593655787,,1,14.43977442911252,,1,12.064246677744729,,1

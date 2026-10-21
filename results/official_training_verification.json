@@ -1,0 +1,26 @@
+{
+  "verified_utc": "2026-10-18T10:52:34.484208+00:00",
+  "status": "verified",
+  "completed_epochs": {
+    "A": 50,
+    "B": 50
+  },
+  "best_weights_sha256": {
+    "A": "0b96e0c3a7fe69862144fb1007622ecbe388057e834648b15ea4cda78fc7c620",
+    "B": "ba38f4ab9087142f631375f351c7586c5bbaf03ab7c673cc6440bf3d1e697dba"
+  },
+  "data_fingerprint": "163cbd3f1f99f58a9c49654aa74fd8ac9d96a0c1609e2ceb038e6b75be1a423e",
+  "evaluation_signature": "67f00bd0446b7105d76bb99709c120a8000ece6b05ab5e3c08447f0bd098347f",
+  "training_signature": "9c937a89a9021ccb361d1a67e6fc8c17ab4da3a45583e3d2fc66d6d5f91769a1",
+  "test_images": 1135,
+  "gt_objects": 2089,
+  "video_groups_disjoint": true,
+  "report": "C:\\Coding Projects\\현욱이 거\\marine_trash_ai\\RESULTS_REPORT.md",
+  "note": "단일 seed; 중단/재개 이력 있음; 실제 수조/웹캠 미검증",
+  "automatic_tests": {
+    "count": 11,
+    "passed": true,
+    "log": "results/final_tests.log"
+  },
+  "completion_monitor_status": "PAUSED"
+}

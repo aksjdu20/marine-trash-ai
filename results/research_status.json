@@ -1,0 +1,17 @@
+{
+  "pid": 271312,
+  "status": "completed",
+  "dataset": "data/processed/trashcan_instance_seed42/dataset.yaml",
+  "model": "yolo26n.pt",
+  "epochs_per_model": 50,
+  "seed": 42,
+  "completed_stages": [
+    "train_A",
+    "evaluate_A",
+    "train_B",
+    "evaluate_B",
+    "compare"
+  ],
+  "stage": "done",
+  "updated_utc": "2026-10-18T04:20:34.865201+00:00"
+}
