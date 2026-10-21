@@ -306,10 +306,10 @@ python -m src.webcam --camera 0 --variant A
 웹캠 실행 시 장치가 열리고 탐지가 시작됩니다. GUI 창을 클릭한 상태에서 키를 누릅니다. Windows에서는 프로젝트 폴더의 PowerShell에서 다음 명령으로도 실행할 수 있습니다.
 
 ```powershell
-.\start_webcam.ps1 -Camera 0 -Variant A -Confidence 0.25
+.\start_webcam.cmd --camera 0 --variant A --conf 0.25
 ```
 
-개선 모델로 시작하려면 `-Variant B`를 지정합니다. 카메라가 열리지 않으면 Windows 설정 → 개인정보 및 보안 → 카메라에서 데스크톱 앱 접근을 허용하고, 다른 화상회의 앱을 종료하거나 `--camera 1`을 시도하세요. 화면이 느리면 CPU 추론 속도가 원인일 수 있습니다.
+`.cmd` 실행 파일은 PowerShell 스크립트 실행 정책을 변경하지 않아도 사용할 수 있습니다. 기존 `.ps1`에서 PSSecurityException이 발생하면 위 명령을 사용하세요. 개선 모델로 시작하려면 `--variant B`를 지정합니다. 카메라가 열리지 않으면 Windows 설정 → 개인정보 및 보안 → 카메라에서 데스크톱 앱 접근을 허용하고, 다른 화상회의 앱을 종료하거나 `--camera 1`을 시도하세요. 화면이 느리면 CPU 추론 속도가 원인일 수 있습니다.
 
 | 키 | 기능 |
 |---|---|
@@ -383,6 +383,7 @@ python -m tests.smoke
 |---|---|
 | python이 Store로 연결/명령 없음 | Python 공식 설치 후 터미널 재시작. 현재 공간은 `..\.venv\Scripts\python.exe` 직접 사용 |
 | Activate.ps1 실행 정책 오류 | 활성화 없이 `.venv\Scripts\python.exe -m ...` 사용. 시스템 정책 변경 불필요 |
+| start_webcam.ps1 실행 정책 오류 | `.\start_webcam.cmd --camera 0 --variant A --conf 0.25` 사용. 가상환경 자동 선택, 시스템 정책 변경 불필요 |
 | No module named src | marine_trash_ai에서 `python -m src.기능명` 실행 |
 | 패키지 없음 | 실행 Python과 설치 Python을 일치시키고 `python -m pip install -r requirements.txt` |
 | CUDA false | NVIDIA 드라이버와 CUDA 지원 PyTorch 확인. `device: cpu`로도 사용 가능 |
