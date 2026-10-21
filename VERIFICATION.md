@@ -68,3 +68,16 @@ cd 'C:\Coding Projects\현욱이 거\marine_trash_ai'
 5. 다른 OS/CUDA/MPS 환경 검증. 현재 CPU 성공이 GPU 동작을 입증하지는 않음.
 
 Streamlit 메뉴는 AppTest로 확인했습니다. 실제 브라우저의 업로드 클릭/영상 재생은 수동 확인이 필요하며 mp4v 코덱은 일부 브라우저에서 지원되지 않을 수 있습니다. 영상 파일 자체는 OpenCV로 재개방해 확인했습니다.
+
+## 2026-10-21 웹캠 조작 기능 보완
+
+- c 키로 실제 카메라 장치를 해제/재개하며, 장치 종료 시 녹화를 마무리합니다. 화면에 현재 모델, 카메라/일시정지 상태, 녹화 상태와 조작 키를 표시합니다.
+- `start_webcam.ps1`로 카메라 번호, A/B 모델, 초기 신뢰도를 지정할 수 있습니다.
+- 장치/키 입력을 모의한 웹캠 테스트 2개를 포함해 다음 회귀 검사 12개가 통과했습니다. Windows 기본 cp949에서는 기존 테스트의 UTF-8 JSON 읽기에 오류가 있어 UTF-8 모드로 검사했습니다.
+
+```powershell
+python -X utf8 -m unittest tests.test_pipeline tests.test_research_runner tests.test_train_resume tests.test_webcam -v
+```
+
+- 실제 A 학습 가중치로 합성 영상 2프레임을 CPU 추론하고, 탐지 MP4를 저장한 뒤 OpenCV로 다시 읽었습니다. 이는 실행 경로 검사이며 인식 정확도를 평가한 실험이 아닙니다.
+- 실제 카메라 연결, GUI 키 입력과 하드웨어 FPS는 확인하지 않았습니다. 이번 전체 검사 시 대시보드 AppTest가 종료되지 않아 중단했으며, 이번 변경의 회귀 통과 수에는 포함하지 않았습니다.

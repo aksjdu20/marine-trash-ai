@@ -20,7 +20,7 @@ def predict_image(model,filename,cfg,conf):
     return draw(im,boxes,[model.names[i] for i in range(len(model.names))]),boxes,result.speed
 
 
-def analyze(source,weights,output,cfg,conf=None,display=False,max_frames=None,webcam=False):
+def analyze(source,weights,output,cfg,conf=None,display=False,max_frames=None,webcam=False,variant="custom"):
     conf = cfg["evaluation"]["conf"] if conf is None else conf
     if not 0 <= conf <= 1:
         raise ValueError("conf는 0~1")
@@ -31,7 +31,7 @@ def analyze(source,weights,output,cfg,conf=None,display=False,max_frames=None,we
     names = [model.names[i] for i in range(len(model.names))]
     output.mkdir(parents=True,exist_ok=True)
     metadata = {**environment(),"source":str(source),"weights":str(path(weights)),"weights_sha256":hash_file(path(weights)),
-                "conf":conf,"imgsz":cfg["train"]["imgsz"],"device":device(cfg["device"]),"accuracy_evaluated":False,
+                "conf":conf,"variant":variant,"imgsz":cfg["train"]["imgsz"],"device":device(cfg["device"]),"accuracy_evaluated":False,
                 "note":"라벨 없는 예측. 낮은 신뢰도/0 탐지는 실제 객체 부재의 증거가 아닙니다.","status":"started"}
     save_json(output/"prediction.json",metadata)
     pred_columns = ["frame","time_seconds","variant","conf_threshold","x1","y1","x2","y2","confidence","class"]
@@ -51,9 +51,10 @@ def analyze(source,weights,output,cfg,conf=None,display=False,max_frames=None,we
         raise ValueError("--max-frames는 1 이상")
     cap = cv2.VideoCapture(camera)
     writer = None
-    active_variant = "custom"
+    active_variant = variant
     record_index,frame_index = 0,0
     paused = False
+    camera_stopped = False
     recording = not webcam
     stream_start = time.perf_counter()
     source_fps = cap.get(cv2.CAP_PROP_FPS)
@@ -70,11 +71,11 @@ def analyze(source,weights,output,cfg,conf=None,display=False,max_frames=None,we
             last_frame = None
             while True:
                 start = time.perf_counter()
-                if not paused:
+                if not paused and not camera_stopped:
                     ok,frame = cap.read()
                     if not ok:
-                        if webcam and frame_index == 0:
-                            raise OSError("카메라가 열렸지만 프레임을 읽지 못했습니다.")
+                        if webcam:
+                            raise OSError("카메라 프레임을 읽지 못했습니다. 연결/권한을 확인하세요.")
                         break
                     if frame_index == 0:
                         model.predict(frame,conf=conf,imgsz=cfg["train"]["imgsz"],device=metadata["device"],verbose=False)
@@ -95,9 +96,7 @@ def analyze(source,weights,output,cfg,conf=None,display=False,max_frames=None,we
                         writer.write(annotated)
                     for row in boxes:
                         pw.writerow([frame_index,stamp,active_variant,conf,*row[:5],names[int(row[5])]])
-                    if display:
-                        cv2.imshow("Marine Trash AI: q quit | space pause | [ ] conf | s photo | r record | a/b model",annotated)
-                    # capture/inference/draw/record/csv/display submission; waitKey 대기는 제외
+                    # capture/inference/draw/record/csv; 화면 출력과 키 대기는 제외
                     elapsed = 1000*(time.perf_counter()-start)
                     frame_times.append(elapsed)
                     fw.writerow([frame_index,stamp,active_variant,conf,*counts,result.speed["inference"],elapsed,1000/max(elapsed,1e-9)])
@@ -106,18 +105,39 @@ def analyze(source,weights,output,cfg,conf=None,display=False,max_frames=None,we
                     if max_frames is not None and frame_index >= max_frames:
                         break
                 if display:
-                    key = cv2.waitKey(30 if paused else 1)&0xff
+                    view = last_frame.copy()
+                    state = "CAMERA OFF" if camera_stopped else "PAUSED" if paused else "LIVE"
+                    cv2.putText(view,f"Model: {active_variant} | {state} | {'REC' if recording else 'REC OFF'} | conf: {conf:.2f}",
+                                (10,66),cv2.FONT_HERSHEY_SIMPLEX,0.5,(0,0,255) if recording else (255,255,255),1)
+                    cv2.putText(view,"q: quit | c: camera | space: pause | [ ]: conf | s: photo | r: record | a/b: model",
+                                (10,view.shape[0]-12),cv2.FONT_HERSHEY_SIMPLEX,0.4,(255,255,255),1)
+                    cv2.imshow("Marine Trash AI",view)
+                    key = cv2.waitKey(30 if paused or camera_stopped else 1)&0xff
                     if key in [ord("q"),27]:
                         break
                     if key == ord(" "):
                         paused = not paused
+                    elif key == ord("c") and webcam:
+                        if not camera_stopped:
+                            cap.release()
+                            camera_stopped = True
+                            recording = False
+                            if writer:
+                                writer.release()
+                                writer = None
+                        else:
+                            cap.open(camera)
+                            if cap.isOpened():
+                                camera_stopped = paused = False
+                            else:
+                                print("카메라 재시작 실패. 연결/권한을 확인한 뒤 c를 다시 누르세요.")
                     elif key == ord("["):
                         conf = max(0.01,round(conf-0.05,2))
                     elif key == ord("]"):
                         conf = min(0.99,round(conf+0.05,2))
                     elif key == ord("s") and last_frame is not None:
-                        write_image(output/"snapshots"/f"frame_{frame_index:08d}_{time.time_ns()}.jpg",last_frame)
-                    elif key == ord("r"):
+                        write_image(output/"snapshots"/f"frame_{frame_index:08d}_{time.time_ns()}.jpg",view)
+                    elif key == ord("r") and not camera_stopped and not paused:
                         recording = not recording
                         if writer:
                             writer.release()
@@ -133,12 +153,12 @@ def analyze(source,weights,output,cfg,conf=None,display=False,max_frames=None,we
                             metadata.setdefault("model_switches",[]).append({"frame":frame_index,"variant":variant,"sha256":hash_file(path(cfg["weights"][variant]))})
                             if last_frame is not None:
                                 model.predict(last_frame,imgsz=cfg["train"]["imgsz"],device=metadata["device"],verbose=False)
-                        except (ValueError,FileNotFoundError) as e:
+                        except (ValueError,OSError) as e:
                             print(e)
             if frame_index == 0:
                 raise OSError("분석 가능한 영상 프레임이 없습니다.")
         metadata.update(status="completed",frames=frame_index,pipeline_fps=1000/np.mean(frame_times),source_fps=source_fps,
-                        timing_note="warmup and key wait excluded; includes capture/inference/draw/writer/CSV/display submission. OpenCV encoder/source FPS controls playback, not measured throughput.")
+                        timing_note="warmup, display submission and key wait excluded; includes capture/inference/draw/writer/CSV. OpenCV encoder/source FPS controls playback, not measured throughput.")
     except BaseException as e:
         metadata.update(status="interrupted" if isinstance(e,KeyboardInterrupt) else "failed",error=str(e),frames=frame_index)
         raise
