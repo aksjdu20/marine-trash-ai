@@ -81,3 +81,15 @@ python -X utf8 -m unittest tests.test_pipeline tests.test_research_runner tests.
 
 - 실제 A 학습 가중치로 합성 영상 2프레임을 CPU 추론하고, 탐지 MP4를 저장한 뒤 OpenCV로 다시 읽었습니다. 이는 실행 경로 검사이며 인식 정확도를 평가한 실험이 아닙니다.
 - 실제 카메라 연결, GUI 키 입력과 하드웨어 FPS는 확인하지 않았습니다. 이번 전체 검사 시 대시보드 AppTest가 종료되지 않아 중단했으며, 이번 변경의 회귀 통과 수에는 포함하지 않았습니다.
+
+## 2026-10-21 추가 학습 착수
+
+사용자가 실제 수중 웹캠 탐지 성능이 낮다고 보고하여 `config.finetune.yaml`과 `src.run_finetune`로 기존 B의 최적 가중치를 50 epoch 추가 미세조정하는 별도 실행을 시작했습니다. 기존 A/B 가중치와 실험 결과는 유지합니다. 공식 데이터 전체 7,212장의 검증과 영상 그룹 분할 확인이 통과했습니다. 학습 대상은 기존 train 4,918장이며 신규 촬영 라벨을 추가한 실험은 아닙니다.
+
+미세조정 실행·재개·실패 기록과 실제 수치 비교 검사를 추가했고, 대시보드를 제외한 회귀 검사 **14개가 통과**했습니다.
+
+```powershell
+python -X utf8 -m unittest tests.test_pipeline tests.test_research_runner tests.test_train_resume tests.test_webcam tests.test_finetune -q
+```
+
+진행 상태는 `results/finetune_status.json`, 로그는 `results/finetune_stdout.log`, `results/finetune_stderr.log`입니다. 이 문단은 착수 기록이며, 최종 학습·평가 완료나 성능 개선을 주장하지 않습니다. 완료 후 `models/B_finetune_seed42/experiment.json`, 실제 test 평가 및 `results/finetune_comparison/`을 함께 확인해야 합니다.

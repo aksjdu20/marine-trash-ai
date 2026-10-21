@@ -294,6 +294,28 @@ python -m src.compare_models --runs results/evaluation/A_seed42 results/evaluati
 
 표의 seed는 가중치 옆 `experiment.json`에서 읽습니다. 데이터 분할 seed는 고정하고 학습 seed만 바꿔 A/B 쌍을 비교합니다. 평균/표준편차와 같은 seed의 B-A 차이를 확인합니다. 한 번의 작은 수치 증가를 유의한 개선이라고 단정하지 마세요. 표본 독립성/수조 영상 차이/클래스 불균형도 보고서에 기록합니다.
 
+## 실제 수중 촬영을 위한 추가 미세조정
+
+`config.finetune.yaml`은 기존 B의 `best.pt`에서 **추가 50 epoch** 학습하는 별도 실험입니다. 공식 학습 이미지 4,918장 전체와 수중 증강을 사용하며 검증 1,159장·테스트 1,135장은 기존 영상 그룹 분할을 유지합니다. 새로 라벨링한 촬영 이미지는 아직 0장입니다. 기존 50 epoch A/B 실험과 미세조정 결과를 혼동하지 마세요.
+
+```powershell
+python -X utf8 -u -m src.run_finetune
+# 프로세스가 종료된 것을 확인한 뒤 중단 지점에서 재개할 때만 실행:
+python -X utf8 -u -m src.run_finetune --resume
+```
+
+기존 최적 B에서 새 AdamW 옵티마이저로 시작하며 학습률은 0.0001, mosaic는 0.5, 입력 640, batch 8, seed 42입니다. 기존 A/B 가중치를 덮어쓰지 않습니다. 학습은 `models/B_finetune_seed42/`, 상태는 `results/finetune_status.json`, 완료 후 실제 test 평가와 탐색적 전후 비교는 `results/evaluation/B_finetune_seed42/`, `results/finetune_comparison/`에 저장됩니다. `best.pt`는 검증 성능으로 선정합니다. 추가 학습량·초기 가중치 등이 달라 기존 A/B의 증강 효과 실험처럼 통제된 비교는 아닙니다.
+
+현재 실행 중인 학습을 중복 실행하지 마세요. `results/finetune_stdout.log`, `results/finetune_stderr.log`에서 실제 진행을 확인할 수 있습니다. CPU 학습은 장시간이 걸리며 절전·컴퓨터 종료로 중단될 수 있습니다. 완료 전에는 성능 개선을 주장할 수 없습니다.
+
+**학습·평가 완료 후** 추가 모델로 웹캠을 실행하는 명령입니다. 기본 `config.yaml`의 기존 A/B 선택은 유지합니다.
+
+```powershell
+.\start_webcam.cmd --config config.finetune.yaml --variant B --camera 0 --conf 0.25
+```
+
+실제 촬영 환경에서의 개선을 검증하려면 해당 수중 영상에 정답 바운딩 박스를 지정한 독립 평가셋이 필요합니다. 모델 예측을 정답으로 간주해 재학습하지 않습니다. 여러 영상에서 수집한 실제 촬영 라벨을 학습/검증/테스트에 영상 단위로 분리해 추가하는 것이 후속 단계입니다.
+
 ## 7. 이미지·영상·웹캠 실행
 
 ```bash
