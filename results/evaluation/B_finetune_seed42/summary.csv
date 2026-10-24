@@ -1,0 +1,2 @@
+﻿precision,recall,f1,map50,map50_95,ultralytics_precision_at_best_f1,ultralytics_recall_at_best_f1,inference_fps,pipeline_fps,images,gt_objects,trash_detection_rate,missed_trash,marine_as_trash,trash_as_marine,background_as_trash
+0.48936170212765956,0.44040210627094306,0.4635928445452255,0.3940315334257885,0.25339507052703847,0.5548213209863412,0.4383183629994192,11.109887152877759,10.014577059700457,1135,2089,0.47716346153846156,413,137,20,420

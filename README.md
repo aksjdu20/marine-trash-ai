@@ -296,6 +296,8 @@ python -m src.compare_models --runs results/evaluation/A_seed42 results/evaluati
 
 ## 실제 수중 촬영을 위한 추가 미세조정
 
+**2026-10-24 추가 50 epoch 학습·테스트 평가·비교를 완료했습니다.** Precision은 46.87%→48.94%로 상승했지만 Recall은 46.29%→44.04%, mAP50은 39.96%→39.40%, 쓰레기 Recall은 50.36%→47.72%로 하락했습니다. 전반적 개선은 확인되지 않아 기본 A/B 모델 선택을 유지합니다. 실제 결과와 한계는 [추가 학습 결과 보고서](FINETUNING_RESULTS.md), [전후 비교 CSV](results/finetune_comparison/comparison.csv)에서 확인하세요. 아래는 실행에 사용한 명령이며, 완료된 학습을 다시 시작할 필요는 없습니다.
+
 `config.finetune.yaml`은 기존 B의 `best.pt`에서 **추가 50 epoch** 학습하는 별도 실험입니다. 공식 학습 이미지 4,918장 전체와 수중 증강을 사용하며 검증 1,159장·테스트 1,135장은 기존 영상 그룹 분할을 유지합니다. 새로 라벨링한 촬영 이미지는 아직 0장입니다. 기존 50 epoch A/B 실험과 미세조정 결과를 혼동하지 마세요.
 
 ```powershell
@@ -306,7 +308,7 @@ python -X utf8 -u -m src.run_finetune --resume
 
 기존 최적 B에서 새 AdamW 옵티마이저로 시작하며 학습률은 0.0001, mosaic는 0.5, 입력 640, batch 8, seed 42입니다. 기존 A/B 가중치를 덮어쓰지 않습니다. 학습은 `models/B_finetune_seed42/`, 상태는 `results/finetune_status.json`, 완료 후 실제 test 평가와 탐색적 전후 비교는 `results/evaluation/B_finetune_seed42/`, `results/finetune_comparison/`에 저장됩니다. `best.pt`는 검증 성능으로 선정합니다. 추가 학습량·초기 가중치 등이 달라 기존 A/B의 증강 효과 실험처럼 통제된 비교는 아닙니다.
 
-현재 실행 중인 학습을 중복 실행하지 마세요. `results/finetune_stdout.log`, `results/finetune_stderr.log`에서 실제 진행을 확인할 수 있습니다. CPU 학습은 장시간이 걸리며 절전·컴퓨터 종료로 중단될 수 있습니다. 완료 전에는 성능 개선을 주장할 수 없습니다.
+현재 이 실행은 완료됐습니다. 최초 `results/finetune_stdout.log`, `results/finetune_stderr.log`와 중단·재개별 `results/finetune_restart_*` 로그는 로컬에 보존했습니다. 최종 성공 실행의 로그 접두사는 `results/finetune_restart_20261024T051858Z`이며 종료 코드는 0입니다. 완료 여부와 가중치·평가 서명 검증은 `results/finetune_status.json`, `results/finetune_verification.json`에 기록했습니다. 다른 학습을 진행할 경우 살아 있는 프로세스를 중복 실행하지 마세요.
 
 **학습·평가 완료 후** 추가 모델로 웹캠을 실행하는 명령입니다. 기본 `config.yaml`의 기존 A/B 선택은 유지합니다.
 
@@ -397,7 +399,7 @@ python -m tests.smoke
 
 32개의 도형 이미지를 만들고 COCO→YOLO 변환→A/B 2 epoch 학습→평가/비교→이미지/영상 분석→프레임 추출→라벨 없음 평가 차단→합성 좌표 GT 평가→라벨 있는/없는 조건 비교까지 확인합니다. 결과는 `results/smoke_runs/<고유번호>`에 저장하고 모델은 `models/*_synthetic_<고유번호>`에 둡니다. **도형의 클래스 이름은 코드 경로를 검사하기 위한 것으로 해양 식별 능력을 검증하지 않습니다.** 반복 실행은 새 폴더로 저장됩니다.
 
-실제 실행 검증 기록은 `VERIFICATION.md`에 있습니다. 현재 환경에서는 Python 3.12/Windows/CPU 경로를 검사했고 실제 TrashCan 데이터 학습, 실제 웹캠 화면/키보드/녹화, 수조 촬영, CUDA/MPS는 데이터/하드웨어를 준비한 후 확인해야 합니다.
+실제 실행 검증 기록은 `VERIFICATION.md`에 있습니다. Python 3.12/Windows/CPU에서 공식 TrashCan A/B 학습과 추가 미세조정·테스트 평가를 완료했습니다. 실제 웹캠 화면/키보드/녹화, 수조 촬영, CUDA/MPS는 별도 하드웨어 검증이 필요합니다.
 
 ## 문제 해결
 

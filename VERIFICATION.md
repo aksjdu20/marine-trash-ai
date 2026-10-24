@@ -93,3 +93,12 @@ python -X utf8 -m unittest tests.test_pipeline tests.test_research_runner tests.
 ```
 
 진행 상태는 `results/finetune_status.json`, 로그는 `results/finetune_stdout.log`, `results/finetune_stderr.log`입니다. 이 문단은 착수 기록이며, 최종 학습·평가 완료나 성능 개선을 주장하지 않습니다. 완료 후 `models/B_finetune_seed42/experiment.json`, 실제 test 평가 및 `results/finetune_comparison/`을 함께 확인해야 합니다.
+
+## 2026-10-24 추가 50 epoch 학습·평가 완료
+
+- `results/finetune_status.json`과 `models/B_finetune_seed42/experiment.json`의 completed 상태 및 results.csv의 연속된 1~50 epoch를 확인했습니다. 최종 실행 종료 코드는 0입니다.
+- 최적 가중치 SHA256 `069be513b5536e698712323799b96dbd6734c9145dd0dd483649dcea13e0b418`가 학습·평가·상태 기록과 일치합니다. 실제 모델을 로드하고 합성 이미지 1장의 추론도 확인했습니다. 합성 추론 검사는 정확도 평가가 아닙니다.
+- 기존 B와 평가 서명이 일치하고 실제 test 1,135장/정답 2,089개를 평가했습니다. 기존 A/B 가중치 해시와 기본 B 설정은 그대로입니다.
+- Precision 46.87%→48.94%, Recall 46.29%→44.04%, F1 46.58%→46.36%, mAP50 39.96%→39.40%, mAP50-95 25.45%→25.34%, Trash Recall 50.36%→47.72%였습니다. 전반적 개선은 확인되지 않았습니다.
+- 대시보드를 제외한 회귀 검사 14개가 다시 통과했습니다(`results/finetune_tests.log`). 비교 그래프의 레이아웃도 확인했습니다. 요약은 `FINETUNING_RESULTS.md`, 기계 검증 기록은 `results/finetune_verification.json`입니다.
+- 실제 촬영 라벨은 추가하지 않았으며 실제 웹캠 정확도는 측정하지 않았습니다. 7회 체크포인트 재개 이력과 최초 실패 자료를 보존했고, 부분 epoch 배치 재처리 및 환경에 따른 비트 단위 재현 한계가 있습니다.

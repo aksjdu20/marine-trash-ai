@@ -1,0 +1,207 @@
+{
+  "utc": "2026-10-21T09:36:36.653599+00:00",
+  "python": "3.12.14",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "packages": {
+    "torch": "2.14.1",
+    "torchvision": "0.29.1",
+    "ultralytics": "8.4.174",
+    "numpy": "2.5.3",
+    "opencv-python": "5.0.0.93",
+    "pandas": "3.0.6",
+    "matplotlib": "3.11.2",
+    "PyYAML": "6.0.3",
+    "streamlit": "1.65.0",
+    "albumentations": null
+  },
+  "model": "models/B_seed42/weights/best.pt",
+  "pretrained_sha256": "ba38f4ab9087142f631375f351c7586c5bbaf03ab7c673cc6440bf3d1e697dba",
+  "train": {
+    "epochs": 50,
+    "imgsz": 640,
+    "batch": 8,
+    "optimizer": "AdamW",
+    "lr0": 0.0001,
+    "workers": 0,
+    "patience": 0,
+    "deterministic": true,
+    "hsv_h": 0.015,
+    "hsv_s": 0.7,
+    "hsv_v": 0.4,
+    "degrees": 0.0,
+    "translate": 0.1,
+    "scale": 0.5,
+    "shear": 0.0,
+    "perspective": 0.0,
+    "flipud": 0.0,
+    "fliplr": 0.5,
+    "mosaic": 0.5,
+    "mixup": 0.0,
+    "copy_paste": 0.0,
+    "close_mosaic": 10
+  },
+  "seed": 42,
+  "device": "cpu",
+  "data_fingerprint": "163cbd3f1f99f58a9c49654aa74fd8ac9d96a0c1609e2ceb038e6b75be1a423e",
+  "names": [
+    "Trash",
+    "Marine_Life",
+    "Equipment"
+  ],
+  "smoke": false,
+  "variant": "B",
+  "comparison_signature": "49779fe29b2e5a7b68a33b7c5a90b2b4e96a3cbf18d061c437dc00522c47ce4b",
+  "source_dataset": "C:\\Coding Projects\\현욱이 거\\marine_trash_ai\\data\\processed\\trashcan_instance_seed42\\dataset.yaml",
+  "training_dataset": "C:\\Coding Projects\\현욱이 거\\marine_trash_ai\\results\\augmented\\B_finetune_seed42\\dataset.yaml",
+  "augmentation": {
+    "strength": 0.5,
+    "probability": 0.8
+  },
+  "common_augmentation": "config train augmentation + installed Ultralytics defaults; args.yaml contains resolved args",
+  "status": "completed",
+  "fixture_only": false,
+  "optional_albumentations_installed": false,
+  "resumptions": [
+    {
+      "utc": "2026-10-22T09:47:04.005228+00:00",
+      "python": "3.12.14",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "packages": {
+        "torch": "2.14.1",
+        "torchvision": "0.29.1",
+        "ultralytics": "8.4.174",
+        "numpy": "2.5.3",
+        "opencv-python": "5.0.0.93",
+        "pandas": "3.0.6",
+        "matplotlib": "3.11.2",
+        "PyYAML": "6.0.3",
+        "streamlit": "1.65.0",
+        "albumentations": null
+      },
+      "checkpoint_sha256": "2bd6662d9e72ce83b76457c0a6fbbcb945ba81fb33ef674d56efef54a3c3690a",
+      "previous_status": "started",
+      "previous_error": null
+    },
+    {
+      "utc": "2026-10-22T21:02:08.286274+00:00",
+      "python": "3.12.14",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "packages": {
+        "torch": "2.14.1",
+        "torchvision": "0.29.1",
+        "ultralytics": "8.4.174",
+        "numpy": "2.5.3",
+        "opencv-python": "5.0.0.93",
+        "pandas": "3.0.6",
+        "matplotlib": "3.11.2",
+        "PyYAML": "6.0.3",
+        "streamlit": "1.65.0",
+        "albumentations": null
+      },
+      "checkpoint_sha256": "1c3a1364af5585844f233e16d240ee3b77f3b13666e925db5e185d97b2959a1b",
+      "previous_status": "started",
+      "previous_error": null
+    },
+    {
+      "utc": "2026-10-23T10:12:50.200399+00:00",
+      "python": "3.12.14",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "packages": {
+        "torch": "2.14.1",
+        "torchvision": "0.29.1",
+        "ultralytics": "8.4.174",
+        "numpy": "2.5.3",
+        "opencv-python": "5.0.0.93",
+        "pandas": "3.0.6",
+        "matplotlib": "3.11.2",
+        "PyYAML": "6.0.3",
+        "streamlit": "1.65.0",
+        "albumentations": null
+      },
+      "checkpoint_sha256": "5cd1fb21925f6c7d0e4260b2b37adb48d385f0bcc841e5e0109bd9529c5ae726",
+      "previous_status": "started",
+      "previous_error": null
+    },
+    {
+      "utc": "2026-10-23T11:12:01.046269+00:00",
+      "python": "3.12.14",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "packages": {
+        "torch": "2.14.1",
+        "torchvision": "0.29.1",
+        "ultralytics": "8.4.174",
+        "numpy": "2.5.3",
+        "opencv-python": "5.0.0.93",
+        "pandas": "3.0.6",
+        "matplotlib": "3.11.2",
+        "PyYAML": "6.0.3",
+        "streamlit": "1.65.0",
+        "albumentations": null
+      },
+      "checkpoint_sha256": "5cd1fb21925f6c7d0e4260b2b37adb48d385f0bcc841e5e0109bd9529c5ae726",
+      "previous_status": "started",
+      "previous_error": null
+    },
+    {
+      "utc": "2026-10-23T23:30:12.685344+00:00",
+      "python": "3.12.14",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "packages": {
+        "torch": "2.14.1",
+        "torchvision": "0.29.1",
+        "ultralytics": "8.4.174",
+        "numpy": "2.5.3",
+        "opencv-python": "5.0.0.93",
+        "pandas": "3.0.6",
+        "matplotlib": "3.11.2",
+        "PyYAML": "6.0.3",
+        "streamlit": "1.65.0",
+        "albumentations": null
+      },
+      "checkpoint_sha256": "b903c2dfead65a45174b5c181d8f7181158d71d79a57ef912935fb84677343ba",
+      "previous_status": "started",
+      "previous_error": null
+    },
+    {
+      "utc": "2026-10-24T02:00:00.639443+00:00",
+      "python": "3.12.14",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "packages": {
+        "torch": "2.14.1",
+        "torchvision": "0.29.1",
+        "ultralytics": "8.4.174",
+        "numpy": "2.5.3",
+        "opencv-python": "5.0.0.93",
+        "pandas": "3.0.6",
+        "matplotlib": "3.11.2",
+        "PyYAML": "6.0.3",
+        "streamlit": "1.65.0",
+        "albumentations": null
+      },
+      "checkpoint_sha256": "d65f5701fd1f2aa7cff2bdd4ac0789eb93733959b537e1ee3aeec648ec06cd76",
+      "previous_status": "started",
+      "previous_error": null
+    },
+    {
+      "utc": "2026-10-24T05:21:19.446200+00:00",
+      "python": "3.12.14",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "packages": {
+        "torch": "2.14.1",
+        "torchvision": "0.29.1",
+        "ultralytics": "8.4.174",
+        "numpy": "2.5.3",
+        "opencv-python": "5.0.0.93",
+        "pandas": "3.0.6",
+        "matplotlib": "3.11.2",
+        "PyYAML": "6.0.3",
+        "streamlit": "1.65.0",
+        "albumentations": null
+      },
+      "checkpoint_sha256": "d649731c2d5a79be0778076dd1201387f33dcb5c3cf947419aa7610efbe394de",
+      "previous_status": "started",
+      "previous_error": null
+    }
+  ],
+  "best_sha256": "069be513b5536e698712323799b96dbd6734c9145dd0dd483649dcea13e0b418"
+}

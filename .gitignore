@@ -16,6 +16,7 @@ results/*
 # Publish trained weights and measured results; keep source images and recovery files local.
 !models/A_seed42/
 !models/B_seed42/
+!models/B_finetune_seed42/
 models/*/*
 !models/*/args.yaml
 !models/*/experiment.json
@@ -25,13 +26,17 @@ models/*/*
 models/*/weights/*
 !models/*/weights/best.pt
 !results/comparison/
+!results/finetune_comparison/
 !results/evaluation/
 results/evaluation/*
 !results/evaluation/A_seed42/
 !results/evaluation/B_seed42/
+!results/evaluation/B_finetune_seed42/
 results/evaluation/*/*
 !results/evaluation/*/*.csv
 !results/evaluation/*/evaluation.json
 !results/evaluation/*/confusion_matrix.png
 !results/official_training_verification.json
 !results/research_status.json
+!results/finetune_status.json
+!results/finetune_verification.json
